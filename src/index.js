@@ -34,8 +34,13 @@ class App extends Component {
   componentDidMount() {
     this.fetchPhotos(this.state.currentPage, this.state.tag);
   }
+
+  onPageChanged = (page) => {
+    this.setState({currentPage: page})
+    this.fetchPhotos(page, this.state.tag);
+  }
   
-  fetchPhotos(page, tag) {
+  fetchPhotos = (page, tag) =>{
     var self = this;
     const { perPage } = this.state;
     const { appId, baseUrl } = this.props;
@@ -92,7 +97,7 @@ class App extends Component {
           current={this.state.currentPage}
           total={this.state.totalPhotos} 
           perPage={this.state.perPage} 
-          onPageChanged={this.fetchPhotos.bind(this)}
+          onPageChanged={this.onPageChanged}
           />
         
       </div>
@@ -173,8 +178,8 @@ class Pagination extends Component {
     return this.props.current < this.totalPages();
   }
 
-  changePage(page) {
-    this.props.onPageChanged(page);
+  changePage(page, tag) {
+    this.props.onPageChanged(page, tag);
   }
 
   render() {
